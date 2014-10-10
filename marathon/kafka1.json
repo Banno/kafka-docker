@@ -2,7 +2,7 @@
     "id": "kafka", 
     "container": {
         "docker": {
-            "image": "registry.banno-internal.com/kafka:2"
+            "image": "registry.banno-internal.com/kafka:3"
         },
         "type": "DOCKER",
         "volumes": []
