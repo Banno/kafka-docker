@@ -47,7 +47,7 @@ do
     if [[ $kafka_name != 'home' ]]; then
       env_var=`echo "$VAR" | sed -r "s/(.*)=.*/\1/g"`
       if grep -q "$kafka_name" $KAFKA_HOME/config/server.properties; then
-        sed -r -i "s/(^|^#)($kafka_name)=(.*)/\2=${!env_var}/g" $KAFKA_HOME/config/server.properties
+        sed -r -i "s@(^|^#)($kafka_name)=(.*)@\2=${!env_var}@g" $KAFKA_HOME/config/server.properties
       else
         echo "$kafka_name=${!env_var}" >> $KAFKA_HOME/config/server.properties
       fi
