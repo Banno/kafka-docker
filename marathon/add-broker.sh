@@ -9,8 +9,11 @@ BASE_DIR=$(dirname $DIR)
 MARATHON_DIR=$BASE_DIR/marathon
 
 #if the json file has KAFKA_ZOOKEEPER_CONNECT with a chroot path, make sure it exists in Zookeeper
-docker run registry.banno-internal.com/zookeepercli:1.0.4 -servers localdocker -c create /kafka ""
-echo "Created /kafka znode"
+if ! docker run registry.banno-internal.com/zookeepercli:1.0.4 -servers localdocker -c exists /kafka
+then
+  docker run registry.banno-internal.com/zookeepercli:1.0.4 -servers localdocker -c create /kafka ""
+  echo "Created /kafka znode"
+fi
 
 #get largest brokerId from Zookeeper and replace KAFKA_BROKER_ID=n+1 in the json file
 
