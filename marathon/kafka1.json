@@ -2,7 +2,7 @@
     "id": "kafka", 
     "container": {
         "docker": {
-            "image": "registry.banno-internal.com/kafka:3"
+            "image": "registry.banno-internal.com/kafka:5"
         },
         "type": "DOCKER",
         "volumes": []
@@ -13,9 +13,9 @@
     "constraints": [["hostname", "UNIQUE"]],
     "env": {
         "KAFKA_BROKER_ID": 1,
-        "KAFKA_LOG_DIRS": "/var/log/kafka",
+        "KAFKA_LOG_DIRS": "/kafka/logs",
         "KAFKA_ZOOKEEPER_CONNECT": "localdocker:2181/kafka",
-        "KAFKA_NUM_PARTITIONS": 8,
+        "KAFKA_NUM_PARTITIONS": 2,
         "KAFKA_AUTO_CREATE_TOPICS_ENABLE": true,
         "KAFKA_DEFAULT_REPLICATION_FACTOR": 1,
         "KAFKA_LOG_RETENTION_HOURS": 168

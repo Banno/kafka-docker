@@ -37,6 +37,15 @@ export KAFKA_ADVERTISED_HOST_NAME=$HOST
 #   - broker.id = brokerCount + 1
 #export KAFKA_BROKER_ID=$KAFKA_PORT
 
+#create the zk chroot path if necessary, because kafka doesn't create it
+zkConnect=`echo $KAFKA_ZOOKEEPER_CONNECT | sed -r "s@(.*)/.*@\1@g"`    #assumes there's always a chroot path
+zkChrootPath=`echo $KAFKA_ZOOKEEPER_CONNECT | sed -r "s@.*/(.*)@\1@g"` #assumes there's always a chroot path
+if ! zookeepercli -servers $zkConnect -c exists "/$zkChrootPath"
+then
+  zookeepercli -servers $zkConnect -c create "/$zkChrootPath" ""
+  echo "Created /$zkChrootPath chroot path"
+fi
+
 env #debugging
 
 #TODO There's a bug in this code: if the env var value contains forward slashes, the replacement does not work!
