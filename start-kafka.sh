@@ -37,6 +37,10 @@ export KAFKA_ADVERTISED_HOST_NAME=$HOST
 #   - broker.id = brokerCount + 1
 #export KAFKA_BROKER_ID=$KAFKA_PORT
 
+if [[ -z "$KAFKA_BROKER_ID" ]]; then
+  export KAFKA_BROKER_ID=$RANDOM #TODO change this to hash of "$HOSTNAME:$KAFKA_PORT"
+fi
+
 #create the zk chroot path if necessary, because kafka doesn't create it
 zkConnect=`echo $KAFKA_ZOOKEEPER_CONNECT | sed -r "s@(.*)/.*@\1@g"`    #assumes there's always a chroot path
 zkChrootPath=`echo $KAFKA_ZOOKEEPER_CONNECT | sed -r "s@.*/(.*)@\1@g"` #assumes there's always a chroot path
