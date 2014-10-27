@@ -18,6 +18,15 @@ if [[ -n "$KAFKA_HEAP_OPTS" ]]; then
     unset KAFKA_HEAP_OPTS
 fi
 
+#create the zk chroot path if necessary, because kafka doesn't create it
+zkConnect=`echo $KAFKA_ZOOKEEPER_CONNECT | sed -r "s@(.*)/.*@\1@g"`    #TODO assumes there's always a chroot path
+zkChrootPath=`echo $KAFKA_ZOOKEEPER_CONNECT | sed -r "s@.*/(.*)@\1@g"` #TODO assumes there's always a chroot path
+if ! zookeepercli -servers $zkConnect -c exists "/$zkChrootPath"
+then
+  zookeepercli -servers $zkConnect -c create "/$zkChrootPath" ""
+  echo "Created /$zkChrootPath chroot path"
+fi
+
 for VAR in `env`
 do
   if [[ $VAR =~ ^KAFKA_ && ! $VAR =~ ^KAFKA_HOME ]]; then
