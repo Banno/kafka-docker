@@ -32,16 +32,18 @@ do
 done
 
 
-$KAFKA_HOME/bin/kafka-server-start.sh $KAFKA_HOME/config/server.properties &
-KAFKA_SERVER_PID=$!
+# $KAFKA_HOME/bin/kafka-server-start.sh $KAFKA_HOME/config/server.properties &
+# KAFKA_SERVER_PID=$!
 
-while netstat -lnt | awk '$4 ~ /:9092$/ {exit 1}'; do sleep 1; done
+# while netstat -lnt | awk '$4 ~ /:9092$/ {exit 1}'; do sleep 1; done
 
-if [[ -n $KAFKA_CREATE_TOPICS ]]; then
-    IFS=','; for topicToCreate in $KAFKA_CREATE_TOPICS; do
-        IFS=':' read -a topicConfig <<< "$topicToCreate"
-        $KAFKA_HOME/bin/kafka-topics.sh --create --zookeeper $KAFKA_ZOOKEEPER_CONNECT --replication-factor ${topicConfig[2]} --partition ${topicConfig[1]} --topic "${topicConfig[0]}"
-    done
-fi
+# if [[ -n $KAFKA_CREATE_TOPICS ]]; then
+#     IFS=','; for topicToCreate in $KAFKA_CREATE_TOPICS; do
+#         IFS=':' read -a topicConfig <<< "$topicToCreate"
+#         $KAFKA_HOME/bin/kafka-topics.sh --create --zookeeper $KAFKA_ZOOKEEPER_CONNECT --replication-factor ${topicConfig[2]} --partition ${topicConfig[1]} --topic "${topicConfig[0]}"
+#     done
+# fi
 
-wait $KAFKA_SERVER_PID
+# wait $KAFKA_SERVER_PID
+
+exec $KAFKA_HOME/bin/kafka-server-start.sh $KAFKA_HOME/config/server.properties
